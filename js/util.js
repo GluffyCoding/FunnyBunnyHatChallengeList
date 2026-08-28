@@ -1,11 +1,23 @@
-// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
 export function getYoutubeIdFromUrl(url) {
     return url.match(
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/,
     )?.[1] ?? '';
 }
 
+// UPDATED: Now checks for Medal links before defaulting to YouTube
 export function embed(video) {
+    if (!video) return '';
+
+    // If it's a Medal.tv link, format it for Medal's embed player
+    if (video.includes('medal.tv')) {
+        const parts = video.split('/');
+        let clipId = parts[parts.length - 1] || parts[parts.length - 2];
+        clipId = clipId.split('?')[0]; // Remove trailing queries like ?view=trends
+        
+        return `https://medal.tv{clipId}`;
+    }
+
+    // Default back to the standard YouTube embed path
     return `https://www.youtube.com/embed/${getYoutubeIdFromUrl(video)}`;
 }
 
