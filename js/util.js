@@ -10,12 +10,11 @@ export function embed(video) {
 
     // 1. Perfectly handle your Medal template link
     if (video.includes('medal.tv')) {
-        // Extracts everything after /clips/
         const clipMatch = video.match(/clips\/([a-zA-Z0-9]+)/);
-        const clipId = clipMatch ? clipMatch[1] : '';
-        
-        // Returns the perfect embed player source link
-        return `https://medal.tv{clipId}`;
+        if (clipMatch && clipMatch[1]) {
+            const clipId = clipMatch[1];
+            return `https://medal.tv{clipId}`;
+        }
     }
 
     // 2. Default fallback for YouTube links
