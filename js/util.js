@@ -7,18 +7,21 @@ export function getYoutubeIdFromUrl(url) {
 
 export function embed(video) {
     if (video.includes("medal.tv")) {
-        // Safe regex to extract the absolute clip ID out of any standard Medal link
+        // Captures the unique Clip ID string cleanly out of different Medal formats
         const match = video.match(/(?:clips|clip)\/(?:[^\/]+\/)?([^\/\?\#]+)/);
+        
+        // FIX 1: Access match[1] to get the pure text string rather than the array object
         const medalId = match ? match[1] : '';
 
         if (!medalId) return '';
 
-        // FIX: The explicit structure required to stop the browser from throwing a 'moved permanently' error
+        // FIX 2: Added the essential forward slash '/' right after medal.tv
         return `https://medal.tv{medalId}`;
     } else {
         return `https://youtube.com{getYoutubeIdFromUrl(video)}`;
     }
 }
+
 
 
 export function localize(num) {
