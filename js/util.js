@@ -17,7 +17,7 @@ export function embed(video) {
         
         // CRITICAL: Must use backticks (``) here, NOT single quotes ('') or double quotes ("")
         return `https://medal.tv{clipId}`;
-}
+        }
 
     }
 
