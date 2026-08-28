@@ -9,12 +9,16 @@ export function embed(video) {
     if (!video) return '';
 
     // If it's a Medal.tv link, format it for Medal's embed player
+    // UPDATED MEDAL CODE
     if (video.includes('medal.tv')) {
         const parts = video.split('/');
         let clipId = parts[parts.length - 1] || parts[parts.length - 2];
-        clipId = clipId.split('?')[0]; // Remove trailing queries like ?view=trends
+        clipId = clipId.split('?')[0]; // Make sure this ends with [0] to get the clean ID
         
+        // CRITICAL: Must use backticks (``) here, NOT single quotes ('') or double quotes ("")
         return `https://medal.tv{clipId}`;
+}
+
     }
 
     // Default back to the standard YouTube embed path
