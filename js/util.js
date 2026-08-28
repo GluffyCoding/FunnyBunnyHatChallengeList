@@ -6,21 +6,7 @@ export function getYoutubeIdFromUrl(url) {
 }
 
 export function embed(video) {
-    if (video.includes("medal.tv")) {
-        // Safely extract the Medal Clip ID
-        const match = video.match(/(?:clips|clip)\/(?:[^\/]+\/)?([^\/\?\#]+)/);
-        const medalId = match ? match[1] : '';
-
-        if (!medalId) return '';
-
-        return `https://medal.tv/clips/${medalId}?autoplay=0&muted=0&loop=0`;
-    } else {
-        const youtubeId = getYoutubeIdFromUrl(video);
-
-        if (!youtubeId) return '';
-
-        return `https://www.youtube.com/embed/${youtubeId}`;
-    }
+    return `https://www.youtube.com/embed/${getYoutubeIdFromUrl(video)}`;
 }
 
 export function localize(num) {
