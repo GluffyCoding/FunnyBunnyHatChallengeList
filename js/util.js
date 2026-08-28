@@ -6,25 +6,32 @@ export function getYoutubeIdFromUrl(url) {
 }
 
 /**
- * Extracts the alphanumeric Medal clip ID.
- * Handles patterns like: /clips/ID, /clip/ID, or /games/game-name/clips/ID
+ * Extracts everything up to the clip ID, preserving the game category path.
+ * Example input: https://medal.tv...
+ * Example output: games/geometry-dash/clip/np8I1bBEgV8Y1xJZo
  */
-export function getMedalIdFromUrl(url) {
-    return url.match(
-        /(?:clips|clip)\/([a-zA-Z0-9]+)/
-    )?.[1] ?? '';
+export function getMedalPathFromUrl(url) {
+    // 1. Matches everything from 'games/' up to the end of the ID
+    // 2. Automatically converts plural 'clips' to singular 'clip' required for player
+    const match = url.match(/(games\/[\w-]+)\/clips\/([a-zA-Z0-9]+)/);
+    if (match) {
+        return `${match[1]}/clip/${match[2]}`;
+    }
+    
+    // Fallback if the link didn't include a game category path
+    const fallbackId = url.match(/(?:clips|clip)\/([a-zA-Z0-9]+)/);
+    return fallbackId ? `clip/${fallbackId[1]}` : '';
 }
 
 /**
- * Automatically detects the platform from the URL and returns the correct embed source
+ * Automatically detects the platform and outputs a secure player source
  */
 export function embed(video) {
     if (!video) return '';
 
     if (video.includes('medal.tv')) {
-        const id = getMedalIdFromUrl(video);
-        // Medal embed players require the singular 'clip' routing format
-        return id ? `https://medal.tv/games/geometry-dash/clips{id}` : '';
+        const path = getMedalPathFromUrl(video);
+        return path ? `https://medal.tv{path}` : '';
     }
 
     if (video.includes('youtube.com') || video.includes('youtu.be')) {
@@ -33,32 +40,4 @@ export function embed(video) {
     }
 
     return '';
-}
-
-export function localize(num) {
-    return num.toLocaleString(undefined, { minimumFractionDigits: 3 });
-}
-
-export function getThumbnailFromId(id) {
-    return `https://youtube.com{id}/mqdefault.jpg`;
-}
-
-// https://stackoverflow.com
-export function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-        // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex],
-            array[currentIndex],
-        ];
-    }
-
-    return array;
 }
