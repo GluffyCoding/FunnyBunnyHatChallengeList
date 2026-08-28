@@ -6,7 +6,13 @@ export function getYoutubeIdFromUrl(url) {
 }
 export function embed(video) {
     if (video.includes("medal.tv")) {
-        return video;
+        // Regex matches the final ID segment of a typical medal share link
+        // e.g. https://medal.tv or https://medal.tv
+        const match = video.match(/(?:clips|clip)\/(?:[^\/]+\/)?([^\/\?\#]+)/);
+        const medalId = match ? match[1] : '';
+
+        // If an ID is found, return the strictly required embed format
+        return medalId ? `https://medal.tv{medalId}` : '';
     } else {
         return `https://www.youtube.com/embed/${getYoutubeIdFromUrl(video)}`;
     }
