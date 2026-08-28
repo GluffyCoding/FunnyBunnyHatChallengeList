@@ -24,7 +24,7 @@ export function embed(video) {
     if (video.includes('medal.tv')) {
         const id = getMedalIdFromUrl(video);
         // Medal embed players require the singular 'clip' routing format
-        return id ? `https://medal.tv/games/geometry-dash/clips/{id}` : '';
+        return id ? `https://medal.tv/games/geometry-dash/clips{id}` : '';
     }
 
     if (video.includes('youtube.com') || video.includes('youtu.be')) {
