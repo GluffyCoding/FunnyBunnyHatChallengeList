@@ -1,4 +1,4 @@
-// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+// https://stackoverflow.com
 export function getYoutubeIdFromUrl(url) {
     return url.match(
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/,
@@ -8,15 +8,18 @@ export function getYoutubeIdFromUrl(url) {
 export function embed(video) {
     if (!video) return '';
 
-    // 1. If it's a Medal link, extract the clip ID and return the Medal embed URL
+    // 1. Perfectly handle your Medal template link
     if (video.includes('medal.tv')) {
-        const match = video.match(/clips\/([a-zA-Z0-9]+)/);
-        const clipId = clipmatch ? clipmatch[1] : '';
+        // Extracts everything after /clips/
+        const clipMatch = video.match(/clips\/([a-zA-Z0-9]+)/);
+        const clipId = clipMatch ? clipMatch[1] : '';
         
+        // Returns the perfect embed player source link
         return `https://medal.tv{clipId}`;
     }
-    
-    return `https://www.youtube.com/embed/${getYoutubeIdFromUrl(video)}`;
+
+    // 2. Default fallback for YouTube links
+    return `https://youtube.com{getYoutubeIdFromUrl(video)}`;
 }
 
 export function localize(num) {
@@ -24,10 +27,10 @@ export function localize(num) {
 }
 
 export function getThumbnailFromId(id) {
-    return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+    return `https://youtube.com{id}/mqdefault.jpg`;
 }
 
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+// https://stackoverflow.com
 export function shuffle(array) {
     let currentIndex = array.length, randomIndex;
 
