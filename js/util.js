@@ -11,7 +11,8 @@ export function embed(video) {
     // 1. If it's a Medal link, extract the clip ID and return the Medal embed URL
     if (video.includes('medal.tv')) {
         const match = video.match(/clips\/([a-zA-Z0-9]+)/);
-        const clipId = match ? match[1] : '';
+        const clipId = clipmatch ? clipmatch[1] : '';
+        
         return `https://medal.tv{clipId}`;
     }
     
