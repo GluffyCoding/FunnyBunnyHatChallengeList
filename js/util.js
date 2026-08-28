@@ -16,7 +16,7 @@ export function embed(video) {
         if (!medalId) return '';
 
         // FIX 2: Added the essential forward slash '/' right after medal.tv
-        return `https://medal.tv{medalId}`;
+        return `https://medal.tv/{medalId}`;
     } else {
         return `https://youtube.com{getYoutubeIdFromUrl(video)}`;
     }
