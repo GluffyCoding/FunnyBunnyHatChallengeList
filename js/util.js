@@ -4,19 +4,22 @@ export function getYoutubeIdFromUrl(url) {
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/,
     )?.[1] ?? '';
 }
+
 export function embed(video) {
     if (video.includes("medal.tv")) {
-        // Regex matches the final ID segment of a typical medal share link
-        // e.g. https://medal.tv or https://medal.tv
+        // Safe regex to extract the absolute clip ID out of any standard Medal link
         const match = video.match(/(?:clips|clip)\/(?:[^\/]+\/)?([^\/\?\#]+)/);
         const medalId = match ? match[1] : '';
 
-        // If an ID is found, return the strictly required embed format
-        return medalId ? `https://medal.tv{medalId}` : '';
+        if (!medalId) return '';
+
+        // FIX: The explicit structure required to stop the browser from throwing a 'moved permanently' error
+        return `https://medal.tv{medalId}`;
     } else {
-        return `https://www.youtube.com/embed/${getYoutubeIdFromUrl(video)}`;
+        return `https://youtube.com{getYoutubeIdFromUrl(video)}`;
     }
 }
+
 
 export function localize(num) {
     return num.toLocaleString(undefined, { minimumFractionDigits: 3 });
