@@ -5,8 +5,26 @@ export function getYoutubeIdFromUrl(url) {
     )?.[1] ?? '';
 }
 
-export function embed(video) {
-    return `https://www.youtube.com/embed/${getYoutubeIdFromUrl(video)}`;
+/**
+ * Extracts the Medal clip ID from various Medal.tv URL formats
+ * Handles standard clips, share links, and embed URLs
+ */
+export function getMedalIdFromUrl(url) {
+    // Matches the 'clip/ID' pattern or 'clips/ID' pattern typical in Medal links
+    return url.match(
+        /(?:medal\.tv\/.*?clip\/|clips\/|embed\/)([a-zA-Z0-9_-]+)/
+    )?.[1] ?? '';
+}
+
+export function embed(video, platform = 'youtube') {
+    if (platform === 'medal') {
+        const id = getMedalIdFromUrl(video);
+        return id ? `https://medal.tv{id}` : '';
+    }
+    
+    // Default to YouTube
+    const id = getYoutubeIdFromUrl(video);
+    return id ? `https://www.youtube.com/embed/${id}` : '';
 }
 
 export function localize(num) {
