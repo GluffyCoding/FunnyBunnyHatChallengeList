@@ -1,4 +1,4 @@
-// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+// https://stackoverflow.com
 export function getYoutubeIdFromUrl(url) {
     return url.match(
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/,
@@ -6,25 +6,33 @@ export function getYoutubeIdFromUrl(url) {
 }
 
 /**
- * Extracts the Medal clip ID from various Medal.tv URL formats
- * Handles standard clips, share links, and embed URLs
+ * Extracts the alphanumeric Medal clip ID.
+ * Handles patterns like: /clips/ID, /clip/ID, or /games/game-name/clips/ID
  */
 export function getMedalIdFromUrl(url) {
-    // Matches the 'clip/ID' pattern or 'clips/ID' pattern typical in Medal links
     return url.match(
-        /(?:medal\.tv\/.*?clip\/|clips\/|embed\/)([a-zA-Z0-9_-]+)/
+        /(?:clips|clip)\/([a-zA-Z0-9]+)/
     )?.[1] ?? '';
 }
 
-export function embed(video, platform = 'youtube') {
-    if (platform === 'medal') {
+/**
+ * Automatically detects the platform from the URL and returns the correct embed source
+ */
+export function embed(video) {
+    if (!video) return '';
+
+    if (video.includes('medal.tv')) {
         const id = getMedalIdFromUrl(video);
+        // Medal embed players require the singular 'clip' routing format
         return id ? `https://medal.tv{id}` : '';
     }
-    
-    // Default to YouTube
-    const id = getYoutubeIdFromUrl(video);
-    return id ? `https://www.youtube.com/embed/${id}` : '';
+
+    if (video.includes('youtube.com') || video.includes('youtu.be')) {
+        const id = getYoutubeIdFromUrl(video);
+        return id ? `https://youtube.com{id}` : '';
+    }
+
+    return '';
 }
 
 export function localize(num) {
@@ -32,10 +40,10 @@ export function localize(num) {
 }
 
 export function getThumbnailFromId(id) {
-    return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+    return `https://youtube.com{id}/mqdefault.jpg`;
 }
 
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+// https://stackoverflow.com
 export function shuffle(array) {
     let currentIndex = array.length, randomIndex;
 
